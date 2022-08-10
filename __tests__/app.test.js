@@ -21,12 +21,6 @@ describe('backend-express-template routes', () => {
       .get('/api/v1/github/callback?code=42')
       .redirects(1);
 
-    expect(res.body).toEqual({
-      id: expect.any(String),
-      username: 'fake_github_user',
-      avatar: expect.any(String),
-      iat: expect.any(Number),
-      exp: expect.any(Number),
-    });
+    expect(res.req.path).toEqual('/api/v1/posts');
   });
 });
