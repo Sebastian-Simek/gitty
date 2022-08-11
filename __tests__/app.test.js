@@ -30,4 +30,8 @@ describe('backend-express-template routes', () => {
       exp: expect.any(Number),
     });
   });
+  it('should log out a user by deleting cookie', async () => {
+    const res = await request(app).delete('/api/v1/github/sessions');
+    expect(res.status).toBe(200);
+  });
 });
