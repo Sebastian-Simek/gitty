@@ -29,4 +29,16 @@ describe('backend-express-template routes', () => {
       ...newGit,
     });
   });
+
+  it('should allow authenticated users to see all gits', async () => {
+    await agent.get('/api/v1/github/callback?code=42');
+    const res = await agent.get('/api/v1/gits');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(expect.arrayContaining([
+      {
+        id: expect.any(String),
+        git: expect.any(String),
+      }
+    ]));
+  });
 });
