@@ -5,6 +5,8 @@ const app = require('../lib/app');
 
 jest.mock('../lib/services/githubAuth');
 
+const agent = request.agent(app); 
+
 describe('backend-express-template routes', () => {
   beforeEach(() => {
     return setup(pool);
@@ -31,7 +33,12 @@ describe('backend-express-template routes', () => {
     });
   });
   it('should log out a user by deleting cookie', async () => {
-    const res = await request(app).delete('/api/v1/github/sessions');
-    expect(res.status).toBe(200);
+    await agent.get('/api/v1/github/callback?code=42')
+      .redirects(1);
+    const res = await agent.delete('/api/v1/github/sessions');
+    expect(res.status).toEqual(200);
+    expect(res.body).toEqual({
+      success: true, message: 'Signed out successfully'
+    });
   });
 });
