@@ -12,5 +12,11 @@ CREATE TABLE github_users (
 
 CREATE TABLE gits (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    git VARCHAR
-)
+    git VARCHAR,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+
+);
+
+INSERT INTO gits (git)
+VALUES
+('Hello world this is my first git!')

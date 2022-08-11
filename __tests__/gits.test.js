@@ -3,6 +3,11 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
+jest.mock('../lib/services/githubAuth');
+
+const agent = request.agent(app);
+
+
 describe('backend-express-template routes', () => {
   beforeEach(() => {
     return setup(pool);
@@ -16,7 +21,8 @@ describe('backend-express-template routes', () => {
     const newGit = {
       git: 'covfeve'
     };
-    const res = await request(app).post('/api/v1/gits').send(newGit);
+    await agent.get('/api/v1/github/callback?code=42');
+    const res = await agent.post('/api/v1/gits').send(newGit);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: expect.any(String),
